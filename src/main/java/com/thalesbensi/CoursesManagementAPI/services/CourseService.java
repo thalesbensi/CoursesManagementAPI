@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
-
 
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
@@ -24,10 +24,12 @@ public class CourseService {
         this.userRepository = userRepository;
     }
 
-    public List<CourseDTO> getAllCourses() {
+    public List<CourseResponseTemplateDTO> getAllCourses() {
         List<Course> courses = courseRepository.findAll();
-        return courses.stream().map(CourseDTO::fromEntity).toList();
+        return courses.stream()
+                .map(CourseResponseTemplateDTO::fromEntityWithoutTeacher).toList();
     }
+
 
     public CourseDTO getCourseById(Long id) {
         Course course =courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course with ID:" + id + "not found! :("));
@@ -35,19 +37,25 @@ public class CourseService {
     }
 
     public CourseResponseTemplateDTO createCourse(CourseCreationTemplateDTO courseDTO) {
-        User teacher = userRepository.findById(courseDTO.teacherId()).orElseThrow(() -> new RuntimeException("Teacher with ID:" + courseDTO.teacherId() + "not found! :( "));
+        User teacher = userRepository.findById(courseDTO.teacherId())
+                .orElseThrow(() -> new RuntimeException("Teacher with ID: " + courseDTO.teacherId() + "not found! :( "));
+
         Course course = ParseDTOToCourse(courseDTO, teacher);
+
         courseRepository.save(course);
         return CourseResponseTemplateDTO.fromEntity(course, teacher);
     }
 
-    public CourseDTO updateCourse(Long id, Course course) {
-        Course courseToBeUpdated = courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course with ID:" + id + "not found! :("));
-        courseToBeUpdated.setTitle(course.getTitle());
-        courseToBeUpdated.setDescription(course.getDescription());
-        courseToBeUpdated.setTeacher(course.getTeacher());
-        courseRepository.save(courseToBeUpdated);
-        return CourseDTO.fromEntity(courseToBeUpdated);
+    public CourseResponseTemplateDTO updateCourse(Long id, CourseCreationTemplateDTO courseDTO) {
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course with ID: " + courseDTO.teacherId() + "not found! :( "));
+
+        User teacher = userRepository.findById(courseDTO.teacherId())
+                .orElseThrow(() -> new RuntimeException("Teacher with ID: " + courseDTO.teacherId() + "not found! :( "));
+
+        Course courseToBeUpdated = ParseDTOToCourse(courseDTO, teacher);
+        courseRepository.save(course);
+        return CourseResponseTemplateDTO.fromEntity(course, teacher);
     }
 
     public void deleteCourseById(Long id) {
