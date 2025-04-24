@@ -1,5 +1,6 @@
 package com.thalesbensi.CoursesManagementAPI.controller;
 
+import com.thalesbensi.CoursesManagementAPI.dto.CourseDTO;
 import com.thalesbensi.CoursesManagementAPI.dto.UserDTO;
 import com.thalesbensi.CoursesManagementAPI.model.User;
 import com.thalesbensi.CoursesManagementAPI.services.UserService;
@@ -13,8 +14,7 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    UserService userService;
-
+    private final UserService userService;
     public UserController(UserService userService) {this.userService = userService;}
 
     @GetMapping()
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteUser(@PathVariable Long id) {
+    public ResponseEntity<CourseDTO> deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

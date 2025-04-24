@@ -12,8 +12,7 @@ import java.util.List;
 @Service
 public class UserService {
 
-    UserRepository userRepository;
-
+    private final UserRepository userRepository;
     public UserService(UserRepository userRepository) {this.userRepository = userRepository;}
 
     public List<UserDTO> getAllUsers() {
@@ -28,13 +27,13 @@ public class UserService {
 
     public UserDTO createUser(@Valid User user) {
         userRepository.save(user);
-        UserDTO newUser = UserDTO.fromEntity(user);
-        return newUser;
+        return UserDTO.fromEntity(user);
+
     }
 
     public UserDTO updateUser(@Valid Long id, User user) {
        User userToBeUpdated = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with ID " + id + " not found"));
-       userToBeUpdated.setUserName(user.getUserName());
+       userToBeUpdated.setName(user.getName());
        userToBeUpdated.setEmail(user.getEmail());
        userToBeUpdated.setPassword(user.getPassword());
        userRepository.save(userToBeUpdated);

@@ -13,26 +13,24 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
     @Column(unique = true, nullable = false)
     @NotNull
-    @NotBlank
-    private String userName;
+    private String name;
 
     @Column(unique = true, nullable = false)
     @NotNull
-    @NotBlank
     private String email;
 
     @Column(unique = false, nullable = false)
     @NotNull
-    @NotBlank
+
     private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(unique = false, nullable = false)
     @NotNull
-    private UserRole userRole;
+    private UserRole userRole = UserRole.STUDENT;
 
 }

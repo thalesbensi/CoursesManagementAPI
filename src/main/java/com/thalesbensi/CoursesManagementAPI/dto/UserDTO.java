@@ -8,10 +8,11 @@ public record UserDTO(Long userId, String userName, String email, String passwor
 
     public static UserDTO fromEntity(User user) {
         return new UserDTO(
-                user.getUserId(),
-                user.getUserName(),
+                user.getId(),
+                user.getName(),
                 user.getEmail(),
                 user.getPassword(),
                 user.getUserRole());
     }
 }
+
