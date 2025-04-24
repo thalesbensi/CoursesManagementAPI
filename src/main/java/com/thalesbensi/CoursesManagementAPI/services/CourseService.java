@@ -36,7 +36,7 @@ public class CourseService {
 
     public CourseResponseTemplateDTO createCourse(CourseCreationTemplateDTO courseDTO) {
         User teacher = userRepository.findById(courseDTO.teacherId()).orElseThrow(() -> new RuntimeException("Teacher with ID:" + courseDTO.teacherId() + "not found! :( "));
-        Course course = createCourseFromDTO(courseDTO, teacher);
+        Course course = ParseDTOToCourse(courseDTO, teacher);
         courseRepository.save(course);
         return CourseResponseTemplateDTO.fromEntity(course, teacher);
     }
@@ -54,7 +54,7 @@ public class CourseService {
         courseRepository.deleteById(id);
     }
 
-    private Course createCourseFromDTO(CourseCreationTemplateDTO courseDTO, User teacher) {
+    private Course ParseDTOToCourse(CourseCreationTemplateDTO courseDTO, User teacher) {
         Course course = new Course();
         course.setTitle(courseDTO.title());
         course.setDescription(courseDTO.description());
