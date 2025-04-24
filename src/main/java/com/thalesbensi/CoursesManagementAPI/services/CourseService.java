@@ -3,6 +3,7 @@ package com.thalesbensi.CoursesManagementAPI.services;
 import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseCreationTemplateDTO;
 import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseDTO;
 import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseResponseTemplateDTO;
+import com.thalesbensi.CoursesManagementAPI.exceptions.ResourceNotFoundException;
 import com.thalesbensi.CoursesManagementAPI.model.Course;
 import com.thalesbensi.CoursesManagementAPI.model.User;
 import com.thalesbensi.CoursesManagementAPI.repositories.CourseRepository;
@@ -59,6 +60,9 @@ public class CourseService {
     }
 
     public void deleteCourseById(Long id) {
+        if (!courseRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Lesson with ID " + id + " not found! :(");
+        }
         courseRepository.deleteById(id);
     }
 

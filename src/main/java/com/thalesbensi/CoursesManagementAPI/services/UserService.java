@@ -41,6 +41,9 @@ public class UserService {
     }
 
     public void deleteUserById(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new ResourceNotFoundException("User with ID " + id + " not found! :(");
+        }
         userRepository.deleteById(id);
     }
 }
