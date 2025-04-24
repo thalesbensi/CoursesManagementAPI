@@ -3,7 +3,6 @@ package com.thalesbensi.CoursesManagementAPI.controller;
 import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseCreationTemplateDTO;
 import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseDTO;
 import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseResponseTemplateDTO;
-import com.thalesbensi.CoursesManagementAPI.model.Course;
 import com.thalesbensi.CoursesManagementAPI.services.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/course")
+@RequestMapping("/courses")
 public class CourseController {
 
     private final CourseService courseService;
@@ -20,7 +19,7 @@ public class CourseController {
     public CourseController(CourseService courseService) {this.courseService = courseService;}
 
     @GetMapping()
-    public ResponseEntity<List<CourseDTO>> getAllCourses() {
+    public ResponseEntity<List<CourseResponseTemplateDTO>> getAllCourses() {
         return ResponseEntity.status(HttpStatus.OK).body(courseService.getAllCourses());
     }
 
@@ -36,8 +35,8 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CourseDTO> updateCourse(@PathVariable Long id, @RequestBody Course course) {
-        return ResponseEntity.status(HttpStatus.OK).body(courseService.updateCourse(id, course));
+    public ResponseEntity<CourseResponseTemplateDTO> updateCourse(@PathVariable Long id, @RequestBody CourseCreationTemplateDTO courseDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(courseService.updateCourse(id, courseDTO));
     }
 
     @DeleteMapping("/{id}")

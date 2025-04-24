@@ -16,4 +16,11 @@ public record CourseResponseTemplateDTO(Long id, String title, String descriptio
                 teacher.getName(),
                 course.getCreationDate());
     }
+
+    public static CourseResponseTemplateDTO fromEntityWithoutTeacher(Course course) {
+        User teacher = course.getTeacher();
+        return fromEntity(course, teacher);
+    }
+
+
 }
