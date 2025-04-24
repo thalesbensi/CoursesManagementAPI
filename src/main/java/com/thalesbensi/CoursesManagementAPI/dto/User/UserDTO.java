@@ -1,4 +1,4 @@
-package com.thalesbensi.CoursesManagementAPI.dto;
+package com.thalesbensi.CoursesManagementAPI.dto.User;
 
 import com.thalesbensi.CoursesManagementAPI.enums.UserRole;
 import com.thalesbensi.CoursesManagementAPI.model.User;

@@ -1,6 +1,8 @@
 package com.thalesbensi.CoursesManagementAPI.controller;
 
-import com.thalesbensi.CoursesManagementAPI.dto.CourseDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseCreationTemplateDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseResponseTemplateDTO;
 import com.thalesbensi.CoursesManagementAPI.model.Course;
 import com.thalesbensi.CoursesManagementAPI.services.CourseService;
 import org.springframework.http.HttpStatus;
@@ -28,8 +30,9 @@ public class CourseController {
     }
 
     @PostMapping()
-    public ResponseEntity<CourseDTO> createCourse(@RequestBody Course course) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(courseService.createCourse(course));
+    public ResponseEntity<CourseResponseTemplateDTO> createCourse(@RequestBody CourseCreationTemplateDTO course) {
+        CourseResponseTemplateDTO createdCourse = courseService.createCourse(course);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdCourse);
     }
 
     @PutMapping("/{id}")

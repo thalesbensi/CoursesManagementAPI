@@ -1,17 +1,28 @@
 package com.thalesbensi.CoursesManagementAPI.services;
 
-import com.thalesbensi.CoursesManagementAPI.dto.CourseDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseCreationTemplateDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseResponseTemplateDTO;
 import com.thalesbensi.CoursesManagementAPI.model.Course;
+import com.thalesbensi.CoursesManagementAPI.model.User;
 import com.thalesbensi.CoursesManagementAPI.repositories.CourseRepository;
+import com.thalesbensi.CoursesManagementAPI.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class CourseService {
 
+
     private final CourseRepository courseRepository;
-    public CourseService(CourseRepository courseRepository) {this.courseRepository = courseRepository;}
+    private final UserRepository userRepository;
+
+    public CourseService(CourseRepository courseRepository, UserRepository userRepository) {
+        this.courseRepository = courseRepository;
+        this.userRepository = userRepository;
+    }
 
     public List<CourseDTO> getAllCourses() {
         List<Course> courses = courseRepository.findAll();
@@ -23,9 +34,11 @@ public class CourseService {
         return CourseDTO.fromEntity(course);
     }
 
-    public CourseDTO createCourse(Course course) {
+    public CourseResponseTemplateDTO createCourse(CourseCreationTemplateDTO courseDTO) {
+        User teacher = userRepository.findById(courseDTO.teacherId()).orElseThrow(() -> new RuntimeException("Teacher with ID:" + courseDTO.teacherId() + "not found! :( "));
+        Course course = createCourseFromDTO(courseDTO, teacher);
         courseRepository.save(course);
-        return CourseDTO.fromEntity(course);
+        return CourseResponseTemplateDTO.fromEntity(course, teacher);
     }
 
     public CourseDTO updateCourse(Long id, Course course) {
@@ -39,5 +52,14 @@ public class CourseService {
 
     public void deleteCourseById(Long id) {
         courseRepository.deleteById(id);
+    }
+
+    private Course createCourseFromDTO(CourseCreationTemplateDTO courseDTO, User teacher) {
+        Course course = new Course();
+        course.setTitle(courseDTO.title());
+        course.setDescription(courseDTO.description());
+        course.setTeacher(teacher);
+        course.setCreationDate(new Date());
+        return course;
     }
 }

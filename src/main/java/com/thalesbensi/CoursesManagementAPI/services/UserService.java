@@ -1,6 +1,6 @@
 package com.thalesbensi.CoursesManagementAPI.services;
 
-import com.thalesbensi.CoursesManagementAPI.dto.UserDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.User.UserDTO;
 import com.thalesbensi.CoursesManagementAPI.exceptions.ResourceNotFoundException;
 import com.thalesbensi.CoursesManagementAPI.model.User;
 import com.thalesbensi.CoursesManagementAPI.repositories.UserRepository;
