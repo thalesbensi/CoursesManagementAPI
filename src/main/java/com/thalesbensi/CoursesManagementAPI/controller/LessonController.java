@@ -27,12 +27,12 @@ public class LessonController {
     }
 
     @PostMapping()
-    public ResponseEntity<LessonDTO> createLesson(@RequestBody Lesson lesson) {
+    public ResponseEntity<LessonDTO> createLesson(@RequestBody LessonDTO lesson) {
         return ResponseEntity.status(HttpStatus.CREATED).body(lessonService.createLesson(lesson));
     }
 
     @PutMapping()
-    public ResponseEntity<LessonDTO> updateLesson(@RequestBody Lesson lesson, Long id) {
+    public ResponseEntity<LessonDTO> updateLesson(@RequestBody LessonDTO lesson, Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(lessonService.updateLesson(lesson,id));
     }
 
