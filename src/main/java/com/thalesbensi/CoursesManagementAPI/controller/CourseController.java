@@ -24,7 +24,7 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CourseDTO> getCourseById(@PathVariable Long id) {
+    public ResponseEntity<CourseResponseTemplateDTO> getCourseById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(courseService.getCourseById(id));
     }
 

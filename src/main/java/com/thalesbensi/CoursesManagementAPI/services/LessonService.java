@@ -2,6 +2,7 @@ package com.thalesbensi.CoursesManagementAPI.services;
 
 import com.thalesbensi.CoursesManagementAPI.dto.LessonDTO;
 import com.thalesbensi.CoursesManagementAPI.exceptions.ResourceNotFoundException;
+import com.thalesbensi.CoursesManagementAPI.mapper.LessonMapper;
 import com.thalesbensi.CoursesManagementAPI.model.Course;
 import com.thalesbensi.CoursesManagementAPI.model.Lesson;
 import com.thalesbensi.CoursesManagementAPI.repositories.CourseRepository;
@@ -16,23 +17,25 @@ public class LessonService {
 
     private final LessonRepository lessonRepository;
     private final CourseRepository courseRepository;
+    private final LessonMapper lessonMapper;
 
-    public LessonService(LessonRepository lessonRepository, CourseRepository courseRepository) {
+    public LessonService(LessonRepository lessonRepository, CourseRepository courseRepository, LessonMapper lessonMapper) {
         this.lessonRepository = lessonRepository;
         this.courseRepository = courseRepository;
+        this.lessonMapper = lessonMapper;
     }
 
     public List<LessonDTO> getAllLessons() {
         return lessonRepository.findAll()
                 .stream()
-                .map(LessonDTO::fromEntity)
+                .map(lessonMapper::toDTO)
                 .toList();
     }
 
     public LessonDTO getLessonById(@Valid Long id) {
         Lesson lesson = lessonRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Lesson with ID " + id + " not found! :("));
-        return LessonDTO.fromEntity(lesson);
+        return lessonMapper.toDTO(lesson);
     }
 
     public LessonDTO createLesson(@Valid LessonDTO lessonDTO) {
@@ -46,7 +49,7 @@ public class LessonService {
         lesson.setCourse(course);
 
         Lesson savedLesson = lessonRepository.save(lesson);
-        return LessonDTO.fromEntity(savedLesson);
+        return lessonMapper.toDTO(savedLesson);
     }
 
     public LessonDTO updateLesson(@Valid LessonDTO lessonDTO, Long id) {
@@ -62,7 +65,7 @@ public class LessonService {
         lessonToBeUpdated.setCourse(course);
 
         Lesson updatedLesson = lessonRepository.save(lessonToBeUpdated);
-        return LessonDTO.fromEntity(updatedLesson);
+        return lessonMapper.toDTO(updatedLesson);
     }
 
     public void deleteLesson(@Valid Long id) {

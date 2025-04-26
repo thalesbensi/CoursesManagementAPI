@@ -2,7 +2,9 @@ package com.thalesbensi.CoursesManagementAPI.services;
 
 import com.thalesbensi.CoursesManagementAPI.dto.UserDTO;
 import com.thalesbensi.CoursesManagementAPI.exceptions.ResourceNotFoundException;
+import com.thalesbensi.CoursesManagementAPI.mapper.UserMapper;
 import com.thalesbensi.CoursesManagementAPI.model.User;
+import com.thalesbensi.CoursesManagementAPI.repositories.CourseRepository;
 import com.thalesbensi.CoursesManagementAPI.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
@@ -13,21 +15,26 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-    public UserService(UserRepository userRepository) {this.userRepository = userRepository;}
+    private final UserMapper userMapper;
+
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+    }
 
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
-        return users.stream().map(UserDTO:: fromEntity).toList();
+        return users.stream().map(userMapper::ToDTO).toList();
     }
 
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with ID " + id + " not found"));
-        return UserDTO.fromEntity(user);
+        return userMapper.ToDTO(user);
     }
 
     public UserDTO createUser(@Valid User user) {
         userRepository.save(user);
-        return UserDTO.fromEntity(user);
+        return userMapper.ToDTO(user);
 
     }
 
@@ -37,7 +44,7 @@ public class UserService {
        userToBeUpdated.setEmail(user.getEmail());
        userToBeUpdated.setPassword(user.getPassword());
        userRepository.save(userToBeUpdated);
-       return UserDTO.fromEntity(userToBeUpdated);
+       return userMapper.ToDTO(userToBeUpdated);
     }
 
     public void deleteUserById(Long id) {
