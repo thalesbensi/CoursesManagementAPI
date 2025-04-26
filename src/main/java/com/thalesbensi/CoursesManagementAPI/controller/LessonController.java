@@ -1,7 +1,6 @@
 package com.thalesbensi.CoursesManagementAPI.controller;
 
-import com.thalesbensi.CoursesManagementAPI.dto.Lesson.LessonDTO;
-import com.thalesbensi.CoursesManagementAPI.model.Lesson;
+import com.thalesbensi.CoursesManagementAPI.dto.LessonDTO;
 import com.thalesbensi.CoursesManagementAPI.services.LessonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

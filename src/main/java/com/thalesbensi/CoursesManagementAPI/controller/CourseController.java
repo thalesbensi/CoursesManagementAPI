@@ -1,8 +1,8 @@
 package com.thalesbensi.CoursesManagementAPI.controller;
 
-import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseCreationTemplateDTO;
-import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseDTO;
-import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseResponseTemplateDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.request.CourseRequestTemplateDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.CourseDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.response.CourseResponseTemplateDTO;
 import com.thalesbensi.CoursesManagementAPI.services.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +29,13 @@ public class CourseController {
     }
 
     @PostMapping()
-    public ResponseEntity<CourseResponseTemplateDTO> createCourse(@RequestBody CourseCreationTemplateDTO course) {
+    public ResponseEntity<CourseResponseTemplateDTO> createCourse(@RequestBody CourseRequestTemplateDTO course) {
         CourseResponseTemplateDTO createdCourse = courseService.createCourse(course);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCourse);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CourseResponseTemplateDTO> updateCourse(@PathVariable Long id, @RequestBody CourseCreationTemplateDTO courseDTO) {
+    public ResponseEntity<CourseResponseTemplateDTO> updateCourse(@PathVariable Long id, @RequestBody CourseRequestTemplateDTO courseDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(courseService.updateCourse(id, courseDTO));
     }
 

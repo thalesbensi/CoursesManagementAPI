@@ -1,4 +1,4 @@
-package com.thalesbensi.CoursesManagementAPI.dto.Course;
+package com.thalesbensi.CoursesManagementAPI.dto.response;
 
 import com.thalesbensi.CoursesManagementAPI.model.Course;
 import com.thalesbensi.CoursesManagementAPI.model.User;

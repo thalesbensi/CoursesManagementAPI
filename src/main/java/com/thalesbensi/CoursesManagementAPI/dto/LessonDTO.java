@@ -1,7 +1,7 @@
-package com.thalesbensi.CoursesManagementAPI.dto.Lesson;
+package com.thalesbensi.CoursesManagementAPI.dto;
 
 
-import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseResponseTemplateDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.response.CourseResponseTemplateDTO;
 import com.thalesbensi.CoursesManagementAPI.model.Lesson;
 
 public record LessonDTO(Long id, String title, String description, String urlVideo, CourseResponseTemplateDTO course) {

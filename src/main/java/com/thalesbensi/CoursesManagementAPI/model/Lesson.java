@@ -1,6 +1,5 @@
 package com.thalesbensi.CoursesManagementAPI.model;
 
-import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseResponseTemplateDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

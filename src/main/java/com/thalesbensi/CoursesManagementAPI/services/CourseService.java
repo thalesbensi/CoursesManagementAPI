@@ -1,8 +1,8 @@
 package com.thalesbensi.CoursesManagementAPI.services;
 
-import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseCreationTemplateDTO;
-import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseDTO;
-import com.thalesbensi.CoursesManagementAPI.dto.Course.CourseResponseTemplateDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.request.CourseRequestTemplateDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.CourseDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.response.CourseResponseTemplateDTO;
 import com.thalesbensi.CoursesManagementAPI.exceptions.ResourceNotFoundException;
 import com.thalesbensi.CoursesManagementAPI.model.Course;
 import com.thalesbensi.CoursesManagementAPI.model.User;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
@@ -37,7 +36,7 @@ public class CourseService {
         return CourseDTO.fromEntity(course);
     }
 
-    public CourseResponseTemplateDTO createCourse(CourseCreationTemplateDTO courseDTO) {
+    public CourseResponseTemplateDTO createCourse(CourseRequestTemplateDTO courseDTO) {
         User teacher = userRepository.findById(courseDTO.teacherId())
                 .orElseThrow(() -> new RuntimeException("Teacher with ID: " + courseDTO.teacherId() + "not found! :( "));
 
@@ -47,7 +46,7 @@ public class CourseService {
         return CourseResponseTemplateDTO.fromEntity(course, teacher);
     }
 
-    public CourseResponseTemplateDTO updateCourse(Long id, CourseCreationTemplateDTO courseDTO) {
+    public CourseResponseTemplateDTO updateCourse(Long id, CourseRequestTemplateDTO courseDTO) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course with ID: " + courseDTO.teacherId() + "not found! :( "));
 
@@ -66,7 +65,7 @@ public class CourseService {
         courseRepository.deleteById(id);
     }
 
-    private Course ParseDTOToCourse(CourseCreationTemplateDTO courseDTO, User teacher) {
+    private Course ParseDTOToCourse(CourseRequestTemplateDTO courseDTO, User teacher) {
         Course course = new Course();
         course.setTitle(courseDTO.title());
         course.setDescription(courseDTO.description());
