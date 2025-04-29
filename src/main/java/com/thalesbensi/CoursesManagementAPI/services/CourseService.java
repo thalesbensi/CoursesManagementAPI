@@ -2,6 +2,8 @@ package com.thalesbensi.CoursesManagementAPI.services;
 
 import com.thalesbensi.CoursesManagementAPI.dto.request.CourseRequestTemplateDTO;
 import com.thalesbensi.CoursesManagementAPI.dto.response.CourseResponseTemplateDTO;
+import com.thalesbensi.CoursesManagementAPI.enums.UserRole;
+import com.thalesbensi.CoursesManagementAPI.exceptions.NotATeacherException;
 import com.thalesbensi.CoursesManagementAPI.exceptions.ResourceNotFoundException;
 import com.thalesbensi.CoursesManagementAPI.mapper.CourseMapper;
 import com.thalesbensi.CoursesManagementAPI.model.Course;
@@ -38,8 +40,7 @@ public class CourseService {
     }
 
     public CourseResponseTemplateDTO createCourse(CourseRequestTemplateDTO courseDTO) {
-         userRepository.findById(courseDTO.teacherId())
-                 .orElseThrow(() -> new RuntimeException("Teacher with ID: " + courseDTO.teacherId() + "not found! :( "));
+        userVerifier(courseDTO);
 
         Course course = courseMapper.toEntity(courseDTO);
         course.setTeacher(userRepository.findById(courseDTO.teacherId())
@@ -51,10 +52,7 @@ public class CourseService {
     public CourseResponseTemplateDTO updateCourse(Long id, CourseRequestTemplateDTO courseDTO) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course with ID: " + courseDTO.teacherId() + "not found! :( "));
-
-        User teacher = userRepository.findById(courseDTO.teacherId())
-                .orElseThrow(() -> new RuntimeException("Teacher with ID: " + courseDTO.teacherId() + "not found! :( "));
-
+        userVerifier(courseDTO);
         Course courseUpdated = courseMapper.toEntity(courseDTO);
         courseRepository.save(course);
         return courseMapper.toCourseResponseTemplateDTO(courseUpdated);
@@ -65,5 +63,14 @@ public class CourseService {
             throw new ResourceNotFoundException("Lesson with ID " + id + " not found! :(");
         }
         courseRepository.deleteById(id);
+    }
+
+    private void userVerifier(CourseRequestTemplateDTO courseDTO) {
+          User teacher = userRepository.findById(courseDTO.teacherId())
+                .orElseThrow(() -> new RuntimeException("Teacher with ID: " + courseDTO.teacherId() + "not found! :( "));
+
+          if (!(teacher.getUserRole() == UserRole.TEACHER)) {
+              throw new NotATeacherException("The User with ID " + courseDTO.teacherId() + " is not a teacher!");
+          }
     }
 }
