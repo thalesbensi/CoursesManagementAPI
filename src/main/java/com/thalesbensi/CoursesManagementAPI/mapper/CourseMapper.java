@@ -15,5 +15,5 @@ public interface CourseMapper {
     Course toEntity(CourseRequestTemplateDTO courseRequestTemplateDTO);
 
     @Mapping(source = "teacher.name", target = "teacherName")
-    CourseResponseTemplateDTO toCourseResponseTemplateDTO(Course course);
+    CourseResponseTemplateDTO ResponseTemplateDTO(Course course);
 }

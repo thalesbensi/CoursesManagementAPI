@@ -30,23 +30,22 @@ public class CourseService {
     public List<CourseResponseTemplateDTO> getAllCourses() {
         List<Course> courses = courseRepository.findAll();
         return courses.stream()
-                .map(courseMapper::toCourseResponseTemplateDTO).toList();
+                .map(courseMapper::ResponseTemplateDTO).toList();
     }
 
     public CourseResponseTemplateDTO getCourseById(Long id) {
         Course course =courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course with ID:" + id + "not found! :("));
-        return courseMapper.toCourseResponseTemplateDTO(course);
+        return courseMapper.ResponseTemplateDTO(course);
     }
 
     public CourseResponseTemplateDTO createCourse(CourseRequestTemplateDTO courseDTO) {
         userVerifier(courseDTO);
-
         Course course = courseMapper.toEntity(courseDTO);
         course.setTeacher(userRepository.findById(courseDTO.teacherId())
                 .orElseThrow(() -> new RuntimeException("Teacher with ID: " + courseDTO.teacherId() + "not found! :( ")));
         courseRepository.save(course);
-        return courseMapper.toCourseResponseTemplateDTO(course);
+        return courseMapper.ResponseTemplateDTO(course);
     }
 
     public CourseResponseTemplateDTO updateCourse(Long id, CourseRequestTemplateDTO courseDTO) {
@@ -55,7 +54,7 @@ public class CourseService {
         userVerifier(courseDTO);
         Course courseUpdated = courseMapper.toEntity(courseDTO);
         courseRepository.save(course);
-        return courseMapper.toCourseResponseTemplateDTO(courseUpdated);
+        return courseMapper.ResponseTemplateDTO(courseUpdated);
     }
 
     public void deleteCourseById(Long id) {
