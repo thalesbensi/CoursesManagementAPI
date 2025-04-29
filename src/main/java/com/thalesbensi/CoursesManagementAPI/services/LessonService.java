@@ -42,13 +42,7 @@ public class LessonService {
     public LessonDTO createLesson(@Valid LessonRequestDTO lessonDTO) {
         Course course = courseRepository.findById(lessonDTO.courseId())
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found for lesson creation"));
-
-        Lesson lesson = new Lesson();
-        lesson.setTitle(lessonDTO.title());
-        lesson.setDescription(lessonDTO.description());
-        lesson.setUrlVideo(lessonDTO.urlVideo());
-        lesson.setCourse(course);
-
+        Lesson lesson = lessonMapper.RequestDTOtoEntity(lessonDTO);
         Lesson savedLesson = lessonRepository.save(lesson);
         return lessonMapper.toDTO(savedLesson);
     }

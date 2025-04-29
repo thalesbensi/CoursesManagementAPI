@@ -11,6 +11,8 @@ public interface LessonMapper {
 
     LessonDTO toDTO(Lesson lesson);
 
-    Lesson toLesson(LessonDTO lessonDTO);
+    Lesson toEntity(LessonDTO lessonDTO);
+
+    Lesson RequestDTOtoEntity(LessonRequestDTO lessonRequestDTO);
 
 }
