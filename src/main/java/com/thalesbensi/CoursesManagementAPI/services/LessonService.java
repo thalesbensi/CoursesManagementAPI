@@ -1,6 +1,7 @@
 package com.thalesbensi.CoursesManagementAPI.services;
 
 import com.thalesbensi.CoursesManagementAPI.dto.LessonDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.request.LessonRequestDTO;
 import com.thalesbensi.CoursesManagementAPI.exceptions.ResourceNotFoundException;
 import com.thalesbensi.CoursesManagementAPI.mapper.LessonMapper;
 import com.thalesbensi.CoursesManagementAPI.model.Course;
@@ -38,8 +39,8 @@ public class LessonService {
         return lessonMapper.toDTO(lesson);
     }
 
-    public LessonDTO createLesson(@Valid LessonDTO lessonDTO) {
-        Course course = courseRepository.findById(lessonDTO.course().id())
+    public LessonDTO createLesson(@Valid LessonRequestDTO lessonDTO) {
+        Course course = courseRepository.findById(lessonDTO.courseId())
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found for lesson creation"));
 
         Lesson lesson = new Lesson();

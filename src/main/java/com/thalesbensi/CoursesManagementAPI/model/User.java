@@ -2,7 +2,6 @@ package com.thalesbensi.CoursesManagementAPI.model;
 
 import com.thalesbensi.CoursesManagementAPI.enums.UserRole;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -25,12 +24,10 @@ public class User {
 
     @Column(unique = false, nullable = false)
     @NotNull
-
     private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(unique = false, nullable = false)
     @NotNull
     private UserRole userRole = UserRole.STUDENT;
-
 }

@@ -1,7 +1,6 @@
 package com.thalesbensi.CoursesManagementAPI.services;
 
 import com.thalesbensi.CoursesManagementAPI.dto.request.CourseRequestTemplateDTO;
-import com.thalesbensi.CoursesManagementAPI.dto.CourseDTO;
 import com.thalesbensi.CoursesManagementAPI.dto.response.CourseResponseTemplateDTO;
 import com.thalesbensi.CoursesManagementAPI.exceptions.ResourceNotFoundException;
 import com.thalesbensi.CoursesManagementAPI.mapper.CourseMapper;
@@ -11,7 +10,6 @@ import com.thalesbensi.CoursesManagementAPI.repositories.CourseRepository;
 import com.thalesbensi.CoursesManagementAPI.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -44,6 +42,8 @@ public class CourseService {
                  .orElseThrow(() -> new RuntimeException("Teacher with ID: " + courseDTO.teacherId() + "not found! :( "));
 
         Course course = courseMapper.toEntity(courseDTO);
+        course.setTeacher(userRepository.findById(courseDTO.teacherId())
+                .orElseThrow(() -> new RuntimeException("Teacher with ID: " + courseDTO.teacherId() + "not found! :( ")));
         courseRepository.save(course);
         return courseMapper.toCourseResponseTemplateDTO(course);
     }
@@ -66,13 +66,4 @@ public class CourseService {
         }
         courseRepository.deleteById(id);
     }
-
-    /*private Course ParseDTOToCourse(CourseRequestTemplateDTO courseDTO, User teacher) {
-        Course course = new Course();
-        course.setTitle(courseDTO.title());
-        course.setDescription(courseDTO.description());
-        course.setTeacher(teacher);
-        course.setCreationDate(new Date());
-        return course;
-    }*/
 }

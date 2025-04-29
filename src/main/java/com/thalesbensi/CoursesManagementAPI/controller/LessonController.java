@@ -1,6 +1,7 @@
 package com.thalesbensi.CoursesManagementAPI.controller;
 
 import com.thalesbensi.CoursesManagementAPI.dto.LessonDTO;
+import com.thalesbensi.CoursesManagementAPI.dto.request.LessonRequestDTO;
 import com.thalesbensi.CoursesManagementAPI.services.LessonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class LessonController {
     }
 
     @PostMapping()
-    public ResponseEntity<LessonDTO> createLesson(@RequestBody LessonDTO lesson) {
+    public ResponseEntity<LessonDTO> createLesson(@RequestBody LessonRequestDTO lesson) {
         return ResponseEntity.status(HttpStatus.CREATED).body(lessonService.createLesson(lesson));
     }
 
