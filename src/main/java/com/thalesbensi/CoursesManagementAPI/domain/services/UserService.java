@@ -1,12 +1,15 @@
 package com.thalesbensi.CoursesManagementAPI.domain.services;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.UserDTO;
-import com.thalesbensi.CoursesManagementAPI.infrastructure.mapper.exceptions.ResourceNotFoundException;
+import com.thalesbensi.CoursesManagementAPI.api.dto.request.UserRequestDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.UserMinResponseDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.UserResponseDTO;
+import com.thalesbensi.CoursesManagementAPI.infrastructure.exceptions.ResourceNotFoundException;
 import com.thalesbensi.CoursesManagementAPI.infrastructure.mapper.UserMapper;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.User;
 import com.thalesbensi.CoursesManagementAPI.domain.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -21,29 +24,30 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public List<UserDTO> getAllUsers() {
+    public List<UserMinResponseDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
-        return users.stream().map(userMapper::toDTO).toList();
+        return users.stream().map(userMapper::fromUserToMinResponseDTO).toList();
     }
 
-    public UserDTO getUserById(Long id) {
+    public UserMinResponseDTO getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with ID " + id + " not found"));
-        return userMapper.toDTO(user);
+        return userMapper.fromUserToMinResponseDTO(user);
     }
 
-    public UserDTO createUser(@Valid User user) {
-        userRepository.save(user);
-        return userMapper.toDTO(user);
+    public UserResponseDTO createUser(UserRequestDTO user) {
+        User userToBeCreated = userMapper.toEntity(user);
+        userRepository.save(userToBeCreated);
+        return userMapper.toResponseDTO(userToBeCreated);
 
     }
 
-    public UserDTO updateUser(@Valid Long id, User user) {
+    public UserResponseDTO updateUser(Long id, UserRequestDTO user) {
        User userToBeUpdated = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with ID " + id + " not found"));
-       userToBeUpdated.setName(user.getName());
-       userToBeUpdated.setEmail(user.getEmail());
-       userToBeUpdated.setPassword(user.getPassword());
+       userToBeUpdated.setName(user.name());
+       userToBeUpdated.setEmail(user.email());
+       userToBeUpdated.setPassword(user.password());
        userRepository.save(userToBeUpdated);
-       return userMapper.toDTO(userToBeUpdated);
+       return userMapper.toResponseDTO(userToBeUpdated);
     }
 
     public void deleteUserById(Long id) {

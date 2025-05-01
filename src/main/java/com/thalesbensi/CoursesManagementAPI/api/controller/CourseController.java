@@ -1,8 +1,7 @@
 package com.thalesbensi.CoursesManagementAPI.api.controller;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.request.CourseRequestTemplateDTO;
-import com.thalesbensi.CoursesManagementAPI.api.dto.CourseDTO;
-import com.thalesbensi.CoursesManagementAPI.api.dto.response.CourseResponseTemplateDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.request.CourseRequestDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.CourseResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.services.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,28 +18,28 @@ public class CourseController {
     public CourseController(CourseService courseService) {this.courseService = courseService;}
 
     @GetMapping()
-    public ResponseEntity<List<CourseResponseTemplateDTO>> getAllCourses() {
+    public ResponseEntity<List<CourseResponseDTO>> getAllCourses() {
         return ResponseEntity.status(HttpStatus.OK).body(courseService.getAllCourses());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CourseResponseTemplateDTO> getCourseById(@PathVariable Long id) {
+    public ResponseEntity<CourseResponseDTO> getCourseById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(courseService.getCourseById(id));
     }
 
     @PostMapping()
-    public ResponseEntity<CourseResponseTemplateDTO> createCourse(@RequestBody CourseRequestTemplateDTO course) {
-        CourseResponseTemplateDTO createdCourse = courseService.createCourse(course);
+    public ResponseEntity<CourseResponseDTO> createCourse(@RequestBody CourseRequestDTO course) {
+        CourseResponseDTO createdCourse = courseService.createCourse(course);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCourse);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CourseResponseTemplateDTO> updateCourse(@PathVariable Long id, @RequestBody CourseRequestTemplateDTO courseDTO) {
+    public ResponseEntity<CourseResponseDTO> updateCourse(@PathVariable Long id, @RequestBody CourseRequestDTO courseDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(courseService.updateCourse(id, courseDTO));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CourseDTO> deleteCourse(@PathVariable Long id) {
+    public ResponseEntity<CourseResponseDTO> deleteCourse(@PathVariable Long id) {
         courseService.deleteCourseById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

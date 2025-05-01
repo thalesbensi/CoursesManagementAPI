@@ -27,7 +27,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(unique = false, nullable = false)
+    @Column(nullable = false)
     @NotNull
-    private UserRole userRole = UserRole.STUDENT;
+    private UserRole userRole;
 }

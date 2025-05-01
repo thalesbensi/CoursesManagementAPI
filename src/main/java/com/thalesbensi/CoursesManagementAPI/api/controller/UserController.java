@@ -1,9 +1,10 @@
 package com.thalesbensi.CoursesManagementAPI.api.controller;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.CourseDTO;
-import com.thalesbensi.CoursesManagementAPI.api.dto.UserDTO;
-import com.thalesbensi.CoursesManagementAPI.domain.entity.User;
+import com.thalesbensi.CoursesManagementAPI.api.dto.request.UserRequestDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.UserMinResponseDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.UserResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,27 +19,27 @@ public class UserController {
     public UserController(UserService userService) {this.userService = userService;}
 
     @GetMapping()
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
+    public ResponseEntity<List<UserMinResponseDTO>> getAllUsers() {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserMinResponseDTO> getUserById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(id));
     }
 
     @PostMapping()
-    public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
+    public ResponseEntity<UserResponseDTO> createUser(@RequestBody @Valid UserRequestDTO user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @RequestBody @Valid UserRequestDTO user) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(id, user));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CourseDTO> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<UserMinResponseDTO> deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

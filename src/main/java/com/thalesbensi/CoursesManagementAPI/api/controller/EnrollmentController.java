@@ -1,7 +1,7 @@
 package com.thalesbensi.CoursesManagementAPI.api.controller;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.request.EnrollmentRequestTemplateDTO;
-import com.thalesbensi.CoursesManagementAPI.api.dto.response.EnrollmentResponseTemplateDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.request.EnrollmentRequestDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.EnrollmentResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.services.CourseService;
 import com.thalesbensi.CoursesManagementAPI.domain.services.EnrollmentService;
 import org.springframework.http.HttpStatus;
@@ -22,31 +22,29 @@ public class EnrollmentController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<EnrollmentResponseTemplateDTO>> getAllEnrollments() {
+    public ResponseEntity<List<EnrollmentResponseDTO>> getAllEnrollments() {
         return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.getAllEnrollments());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EnrollmentResponseTemplateDTO> getEnrollmentById(@PathVariable Long id) {
+    public ResponseEntity<EnrollmentResponseDTO> getEnrollmentById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.getEnrollmentById(id));
     }
 
     @PostMapping()
-    public ResponseEntity<EnrollmentResponseTemplateDTO> createEnrollment(@RequestBody EnrollmentRequestTemplateDTO enrollmentDTO) {
-        EnrollmentResponseTemplateDTO createdEnrollment = enrollmentService.createEnrollment(enrollmentDTO);
+    public ResponseEntity<EnrollmentResponseDTO> createEnrollment(@RequestBody EnrollmentRequestDTO enrollmentDTO) {
+        EnrollmentResponseDTO createdEnrollment = enrollmentService.createEnrollment(enrollmentDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdEnrollment);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EnrollmentResponseTemplateDTO> updateEnrollment(@PathVariable Long id, @RequestBody EnrollmentRequestTemplateDTO enrollmentDTO) {
+    public ResponseEntity<EnrollmentResponseDTO> updateEnrollment(@PathVariable Long id, @RequestBody EnrollmentRequestDTO enrollmentDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.updateEnrollment(id, enrollmentDTO));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<EnrollmentResponseTemplateDTO> deleteEnrollment(@PathVariable Long id) {
-        courseService.deleteCourseById(id);
+    public ResponseEntity<EnrollmentResponseDTO> deleteEnrollment(@PathVariable Long id) {
+        enrollmentService.deleteEnrollment(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
-
 }

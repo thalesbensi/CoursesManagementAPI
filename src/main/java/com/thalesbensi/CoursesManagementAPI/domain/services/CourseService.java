@@ -1,10 +1,10 @@
 package com.thalesbensi.CoursesManagementAPI.domain.services;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.request.CourseRequestTemplateDTO;
-import com.thalesbensi.CoursesManagementAPI.api.dto.response.CourseResponseTemplateDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.request.CourseRequestDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.CourseResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.enums.UserRole;
-import com.thalesbensi.CoursesManagementAPI.infrastructure.mapper.exceptions.NotATeacherException;
-import com.thalesbensi.CoursesManagementAPI.infrastructure.mapper.exceptions.ResourceNotFoundException;
+import com.thalesbensi.CoursesManagementAPI.infrastructure.exceptions.NotATeacherException;
+import com.thalesbensi.CoursesManagementAPI.infrastructure.exceptions.ResourceNotFoundException;
 import com.thalesbensi.CoursesManagementAPI.infrastructure.mapper.CourseMapper;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.Course;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.User;
@@ -27,19 +27,19 @@ public class CourseService {
         this.courseMapper = courseMapper;
     }
 
-    public List<CourseResponseTemplateDTO> getAllCourses() {
+    public List<CourseResponseDTO> getAllCourses() {
         List<Course> courses = courseRepository.findAll();
         return courses.stream()
                 .map(courseMapper::ResponseTemplateDTO).toList();
     }
 
-    public CourseResponseTemplateDTO getCourseById(Long id) {
+    public CourseResponseDTO getCourseById(Long id) {
         Course course =courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course with ID:" + id + "not found! :("));
         return courseMapper.ResponseTemplateDTO(course);
     }
 
-    public CourseResponseTemplateDTO createCourse(CourseRequestTemplateDTO courseDTO) {
+    public CourseResponseDTO createCourse(CourseRequestDTO courseDTO) {
         userVerifier(courseDTO);
         Course course = courseMapper.toEntity(courseDTO);
         course.setTeacher(userRepository.findById(courseDTO.teacherId())
@@ -48,7 +48,7 @@ public class CourseService {
         return courseMapper.ResponseTemplateDTO(course);
     }
 
-    public CourseResponseTemplateDTO updateCourse(Long id, CourseRequestTemplateDTO courseDTO) {
+    public CourseResponseDTO updateCourse(Long id, CourseRequestDTO courseDTO) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course with ID: " + courseDTO.teacherId() + "not found! :( "));
         userVerifier(courseDTO);
@@ -64,7 +64,7 @@ public class CourseService {
         courseRepository.deleteById(id);
     }
 
-    private void userVerifier(CourseRequestTemplateDTO courseDTO) {
+    private void userVerifier(CourseRequestDTO courseDTO) {
           User teacher = userRepository.findById(courseDTO.teacherId())
                 .orElseThrow(() -> new RuntimeException("Teacher with ID: " + courseDTO.teacherId() + "not found! :( "));
 

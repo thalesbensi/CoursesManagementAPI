@@ -1,8 +1,8 @@
 package com.thalesbensi.CoursesManagementAPI.domain.services;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.request.EnrollmentRequestTemplateDTO;
-import com.thalesbensi.CoursesManagementAPI.api.dto.response.EnrollmentResponseTemplateDTO;
-import com.thalesbensi.CoursesManagementAPI.infrastructure.mapper.exceptions.ResourceNotFoundException;
+import com.thalesbensi.CoursesManagementAPI.api.dto.request.EnrollmentRequestDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.EnrollmentResponseDTO;
+import com.thalesbensi.CoursesManagementAPI.infrastructure.exceptions.ResourceNotFoundException;
 import com.thalesbensi.CoursesManagementAPI.infrastructure.mapper.EnrollmentMapper;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.Enrollment;
 import com.thalesbensi.CoursesManagementAPI.domain.repositories.CourseRepository;
@@ -27,27 +27,27 @@ public class EnrollmentService {
         this.courseRepository = courseRepository;
     }
 
-    public List<EnrollmentResponseTemplateDTO> getAllEnrollments() {
+    public List<EnrollmentResponseDTO> getAllEnrollments() {
         List<Enrollment> enrollments = enrollmentRepository.findAll();
         return enrollments.stream().map(enrollmentMapper::toResponseDTO).toList();
     }
 
-    public EnrollmentResponseTemplateDTO getEnrollmentById(Long id) {
+    public EnrollmentResponseDTO getEnrollmentById(Long id) {
         Enrollment enrollment = enrollmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Enrollment with ID:" + id + "not found :("));
         return enrollmentMapper.toResponseDTO(enrollment);
     }
 
-    public EnrollmentResponseTemplateDTO createEnrollment(EnrollmentRequestTemplateDTO enrollmentRequestTemplateDTO) {
-          userRepository.findById(enrollmentRequestTemplateDTO.studentId())
-                  .orElseThrow(() -> new RuntimeException("User with ID " + enrollmentRequestTemplateDTO.studentId() + " not found"));
-          courseRepository.findById(enrollmentRequestTemplateDTO.courseId())
-                  .orElseThrow(() -> new RuntimeException("Course with ID " + enrollmentRequestTemplateDTO.courseId() + " not found"));
-        Enrollment enrollment = enrollmentMapper.toEntity(enrollmentRequestTemplateDTO);
+    public EnrollmentResponseDTO createEnrollment(EnrollmentRequestDTO enrollmentRequestDTO) {
+          userRepository.findById(enrollmentRequestDTO.studentId())
+                  .orElseThrow(() -> new RuntimeException("User with ID " + enrollmentRequestDTO.studentId() + " not found"));
+          courseRepository.findById(enrollmentRequestDTO.courseId())
+                  .orElseThrow(() -> new RuntimeException("Course with ID " + enrollmentRequestDTO.courseId() + " not found"));
+        Enrollment enrollment = enrollmentMapper.toEntity(enrollmentRequestDTO);
         enrollmentRepository.save(enrollment);
         return enrollmentMapper.toResponseDTO(enrollment);
     }
 
-    public EnrollmentResponseTemplateDTO updateEnrollment(Long id, EnrollmentRequestTemplateDTO enrollmentDTO) {
+    public EnrollmentResponseDTO updateEnrollment(Long id, EnrollmentRequestDTO enrollmentDTO) {
         enrollmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Enrollment with ID:" + id + "not found :("));
         Enrollment enrollment = enrollmentMapper.toEntity(enrollmentDTO);

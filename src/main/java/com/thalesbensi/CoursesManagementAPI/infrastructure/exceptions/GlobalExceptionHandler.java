@@ -1,4 +1,4 @@
-package com.thalesbensi.CoursesManagementAPI.infrastructure.mapper.exceptions;
+package com.thalesbensi.CoursesManagementAPI.infrastructure.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +22,4 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleGeneralException(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Error: " + ex.getMessage());
     }
-
-
 }

@@ -2,7 +2,7 @@ package com.thalesbensi.CoursesManagementAPI.domain.services;
 
 import com.thalesbensi.CoursesManagementAPI.api.dto.LessonDTO;
 import com.thalesbensi.CoursesManagementAPI.api.dto.request.LessonRequestDTO;
-import com.thalesbensi.CoursesManagementAPI.infrastructure.mapper.exceptions.ResourceNotFoundException;
+import com.thalesbensi.CoursesManagementAPI.infrastructure.exceptions.ResourceNotFoundException;
 import com.thalesbensi.CoursesManagementAPI.infrastructure.mapper.LessonMapper;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.Course;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.Lesson;
@@ -40,7 +40,7 @@ public class LessonService {
     }
 
     public LessonDTO createLesson(@Valid LessonRequestDTO lessonDTO) {
-        Course course = courseRepository.findById(lessonDTO.courseId())
+         courseRepository.findById(lessonDTO.course())
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found for lesson creation"));
         Lesson lesson = lessonMapper.RequestDTOtoEntity(lessonDTO);
         Lesson savedLesson = lessonRepository.save(lesson);
