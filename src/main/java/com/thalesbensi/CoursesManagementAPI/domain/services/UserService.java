@@ -7,9 +7,7 @@ import com.thalesbensi.CoursesManagementAPI.infrastructure.exceptions.ResourceNo
 import com.thalesbensi.CoursesManagementAPI.infrastructure.mapper.UserMapper;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.User;
 import com.thalesbensi.CoursesManagementAPI.domain.repositories.UserRepository;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 

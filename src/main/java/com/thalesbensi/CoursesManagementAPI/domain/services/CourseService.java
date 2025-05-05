@@ -30,46 +30,52 @@ public class CourseService {
     public List<CourseResponseDTO> getAllCourses() {
         List<Course> courses = courseRepository.findAll();
         return courses.stream()
-                .map(courseMapper::ResponseTemplateDTO).toList();
+                .map(courseMapper::toResponseDTO)
+                .toList();
     }
 
     public CourseResponseDTO getCourseById(Long id) {
-        Course course =courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course with ID:" + id + "not found! :("));
-        return courseMapper.ResponseTemplateDTO(course);
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Course with ID: " + id + " not found! :("));
+        return courseMapper.toResponseDTO(course);
     }
 
     public CourseResponseDTO createCourse(CourseRequestDTO courseDTO) {
         userVerifier(courseDTO);
         Course course = courseMapper.toEntity(courseDTO);
-        course.setTeacher(userRepository.findById(courseDTO.teacherId())
-                .orElseThrow(() -> new RuntimeException("Teacher with ID: " + courseDTO.teacherId() + "not found! :( ")));
+        User teacher = userRepository.findById(courseDTO.teacherId())
+                .orElseThrow(() -> new ResourceNotFoundException("Teacher with ID: " + courseDTO.teacherId() + " not found! :( "));
+        course.setTeacher(teacher);
         courseRepository.save(course);
-        return courseMapper.ResponseTemplateDTO(course);
+        return courseMapper.toResponseDTO(course);
     }
 
     public CourseResponseDTO updateCourse(Long id, CourseRequestDTO courseDTO) {
-        Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course with ID: " + courseDTO.teacherId() + "not found! :( "));
+        Course existingCourse = courseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Course with ID: " + id + " not found! :("));
         userVerifier(courseDTO);
-        Course courseUpdated = courseMapper.toEntity(courseDTO);
-        courseRepository.save(course);
-        return courseMapper.ResponseTemplateDTO(courseUpdated);
+        existingCourse.setTitle(courseDTO.title());
+        existingCourse.setDescription(courseDTO.description());
+        existingCourse.setTeacher(userRepository.findById(courseDTO.teacherId())
+                .orElseThrow(() -> new ResourceNotFoundException("Teacher with ID: " + courseDTO.teacherId() + " not found! :(")));
+        courseRepository.save(existingCourse);
+        return courseMapper.toResponseDTO(existingCourse);
     }
 
     public void deleteCourseById(Long id) {
         if (!courseRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Lesson with ID " + id + " not found! :(");
+            throw new ResourceNotFoundException("Course with ID: " + id + " not found! :(");
         }
         courseRepository.deleteById(id);
     }
 
     private void userVerifier(CourseRequestDTO courseDTO) {
-          User teacher = userRepository.findById(courseDTO.teacherId())
-                .orElseThrow(() -> new RuntimeException("Teacher with ID: " + courseDTO.teacherId() + "not found! :( "));
+        User teacher = userRepository.findById(courseDTO.teacherId())
+                .orElseThrow(() -> new ResourceNotFoundException("Teacher with ID: " + courseDTO.teacherId() + " not found! :( "));
 
-          if (!(teacher.getUserRole() == UserRole.TEACHER)) {
-              throw new NotATeacherException("The User with ID " + courseDTO.teacherId() + " is not a teacher!");
-          }
+        if (!(teacher.getUserRole() == UserRole.TEACHER)) {
+            throw new NotATeacherException("The User with ID " + courseDTO.teacherId() + " is not a teacher!");
+        }
     }
 }
+
