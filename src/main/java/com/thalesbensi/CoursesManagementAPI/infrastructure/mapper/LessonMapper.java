@@ -13,5 +13,5 @@ public interface LessonMapper {
     LessonDTO toDTO(Lesson lesson);
 
     @Mappings({@Mapping(target = "course.id", source = "course")})
-    Lesson RequestDTOtoEntity(LessonRequestDTO lessonRequestDTO);
+    Lesson requestDTOtoEntity(LessonRequestDTO lessonRequestDTO);
 }

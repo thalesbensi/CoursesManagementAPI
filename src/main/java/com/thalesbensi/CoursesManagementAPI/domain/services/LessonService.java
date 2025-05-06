@@ -8,7 +8,6 @@ import com.thalesbensi.CoursesManagementAPI.domain.entity.Course;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.Lesson;
 import com.thalesbensi.CoursesManagementAPI.domain.repositories.CourseRepository;
 import com.thalesbensi.CoursesManagementAPI.domain.repositories.LessonRepository;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,26 +32,26 @@ public class LessonService {
                 .toList();
     }
 
-    public LessonDTO getLessonById(@Valid Long id) {
+    public LessonDTO getLessonById(Long id) {
         Lesson lesson = lessonRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Lesson with ID " + id + " not found! :("));
+                .orElseThrow(() -> new ResourceNotFoundException("Lesson with ID " + id + " not found."));
         return lessonMapper.toDTO(lesson);
     }
 
-    public LessonDTO createLesson(@Valid LessonRequestDTO lessonDTO) {
-         courseRepository.findById(lessonDTO.course())
-                .orElseThrow(() -> new ResourceNotFoundException("Course not found for lesson creation"));
-        Lesson lesson = lessonMapper.RequestDTOtoEntity(lessonDTO);
+    public LessonDTO createLesson(LessonRequestDTO lessonDTO) {
+        courseRepository.findById(lessonDTO.course())
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found for lesson creation."));
+        Lesson lesson = lessonMapper.requestDTOtoEntity(lessonDTO);
         Lesson savedLesson = lessonRepository.save(lesson);
         return lessonMapper.toDTO(savedLesson);
     }
 
-    public LessonDTO updateLesson(@Valid LessonDTO lessonDTO, Long id) {
+    public LessonDTO updateLesson(LessonDTO lessonDTO, Long id) {
         Lesson lessonToBeUpdated = lessonRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Lesson with ID " + id + " not found! :("));
+                .orElseThrow(() -> new ResourceNotFoundException("Lesson with ID " + id + " not found."));
 
         Course course = courseRepository.findById(lessonDTO.course().id())
-                .orElseThrow(() -> new ResourceNotFoundException("Course not found for lesson update"));
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found for lesson update."));
 
         lessonToBeUpdated.setTitle(lessonDTO.title());
         lessonToBeUpdated.setDescription(lessonDTO.description());
@@ -63,9 +62,9 @@ public class LessonService {
         return lessonMapper.toDTO(updatedLesson);
     }
 
-    public void deleteLesson(@Valid Long id) {
+    public void deleteLesson(Long id) {
         if (!lessonRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Lesson with ID " + id + " not found! :(");
+            throw new ResourceNotFoundException("Lesson with ID " + id + " not found.");
         }
         lessonRepository.deleteById(id);
     }
