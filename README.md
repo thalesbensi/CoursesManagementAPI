@@ -24,7 +24,7 @@ Este projeto foi criado para consolidar conhecimentos em desenvolvimento Back-en
 
 ### 🔐 Autenticação & Segurança
 - Proteção de rotas com JWT
-- Regras de autorização baseadas em perfis: `ALUNO` e `PROFESSOR`
+- Regras de autorização baseadas em perfis: `STUDENT` e `TEACHER`
 
 ---
 
@@ -32,7 +32,7 @@ Este projeto foi criado para consolidar conhecimentos em desenvolvimento Back-en
 
 - **Java 17+**
 - **Spring Boot** (Web, Data JPA, Security)
-- **MySQL** (ou H2 para testes locais)
+- **PostgreSQL** (ou H2 para testes locais)
 - **Lombok**
 - **Swagger/OpenAPI**
 - **JWT (JSON Web Token)**
