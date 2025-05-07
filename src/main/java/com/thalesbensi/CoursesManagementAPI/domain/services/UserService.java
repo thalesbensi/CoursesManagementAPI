@@ -32,22 +32,6 @@ public class UserService {
         return userMapper.fromUserToMinResponseDTO(user);
     }
 
-    public UserResponseDTO createUser(UserRequestDTO user) {
-        User userToBeCreated = userMapper.toEntity(user);
-        userRepository.save(userToBeCreated);
-        return userMapper.toResponseDTO(userToBeCreated);
-
-    }
-
-    public UserResponseDTO updateUser(Long id, UserRequestDTO user) {
-       User userToBeUpdated = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with ID " + id + " not found"));
-       userToBeUpdated.setName(user.name());
-       userToBeUpdated.setEmail(user.email());
-       userToBeUpdated.setPassword(user.password());
-       userRepository.save(userToBeUpdated);
-       return userMapper.toResponseDTO(userToBeUpdated);
-    }
-
     public void deleteUserById(Long id) {
         if (!userRepository.existsById(id)) {
             throw new ResourceNotFoundException("User with ID " + id + " not found! :(");
