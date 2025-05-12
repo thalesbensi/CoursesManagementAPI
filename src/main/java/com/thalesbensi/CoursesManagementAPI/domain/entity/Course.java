@@ -15,19 +15,19 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column
     @NotNull
     private String title;
 
-    @Column(nullable = false)
+    @Column
     @NotNull
     private String description;
 
    @ManyToOne(optional = false)
-   @JoinColumn(name = "teacher_id", nullable = false)
+   @JoinColumn(name = "teacher_id")
    @NotNull
    private User teacher;
 
-    @Column(nullable = false)
+    @Column(name = "created_at")
     private Date creationDate = new Date();
 }

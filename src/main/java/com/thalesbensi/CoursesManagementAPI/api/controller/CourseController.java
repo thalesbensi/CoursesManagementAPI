@@ -1,8 +1,11 @@
 package com.thalesbensi.CoursesManagementAPI.api.controller;
 
+import com.thalesbensi.CoursesManagementAPI.api.dto.LessonDTO;
 import com.thalesbensi.CoursesManagementAPI.api.dto.request.CourseRequestDTO;
 import com.thalesbensi.CoursesManagementAPI.api.dto.response.CourseResponseDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.LessonListItemResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.services.CourseService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +30,11 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.OK).body(courseService.getCourseById(id));
     }
 
+    @GetMapping("/{id}/lessons")
+    public ResponseEntity<List<LessonListItemResponseDTO>> getCourseLessons(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(courseService.getCourseLessons(id));
+    }
+
     @PostMapping()
     public ResponseEntity<CourseResponseDTO> createCourse(@RequestBody CourseRequestDTO course) {
         CourseResponseDTO createdCourse = courseService.createCourse(course);
@@ -34,7 +42,7 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CourseResponseDTO> updateCourse(@PathVariable Long id, @RequestBody CourseRequestDTO courseDTO) {
+    public ResponseEntity<CourseResponseDTO> updateCourse(@PathVariable Long id, @RequestBody CourseRequestDTO courseDTO) throws BadRequestException {
         return ResponseEntity.status(HttpStatus.OK).body(courseService.updateCourse(id, courseDTO));
     }
 
