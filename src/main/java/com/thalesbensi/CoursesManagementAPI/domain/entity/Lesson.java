@@ -13,15 +13,15 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column
     @NotNull
     private String title;
 
-    @Column(nullable = false)
+    @Column
     @NotNull
     private String description;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "url_video", nullable = false)
     @NotNull
     private String urlVideo;
 

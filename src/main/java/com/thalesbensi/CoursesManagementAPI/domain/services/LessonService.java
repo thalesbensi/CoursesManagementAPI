@@ -2,12 +2,20 @@ package com.thalesbensi.CoursesManagementAPI.domain.services;
 
 import com.thalesbensi.CoursesManagementAPI.api.dto.LessonDTO;
 import com.thalesbensi.CoursesManagementAPI.api.dto.request.LessonRequestDTO;
+import com.thalesbensi.CoursesManagementAPI.domain.repositories.UserRepository;
 import com.thalesbensi.CoursesManagementAPI.infrastructure.exceptions.ResourceNotFoundException;
 import com.thalesbensi.CoursesManagementAPI.infrastructure.mapper.LessonMapper;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.Course;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.Lesson;
 import com.thalesbensi.CoursesManagementAPI.domain.repositories.CourseRepository;
 import com.thalesbensi.CoursesManagementAPI.domain.repositories.LessonRepository;
+import com.thalesbensi.CoursesManagementAPI.infrastructure.utils.OwnershipVerifier;
+import com.thalesbensi.CoursesManagementAPI.infrastructure.utils.SecurityUtils;
+import jakarta.transaction.Transactional;
+import org.apache.catalina.security.SecurityUtil;
+import org.apache.coyote.BadRequestException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +26,13 @@ public class LessonService {
     private final LessonRepository lessonRepository;
     private final CourseRepository courseRepository;
     private final LessonMapper lessonMapper;
+    private final UserRepository userRepository;
 
-    public LessonService(LessonRepository lessonRepository, CourseRepository courseRepository, LessonMapper lessonMapper) {
+    public LessonService(LessonRepository lessonRepository, CourseRepository courseRepository, LessonMapper lessonMapper, UserRepository userRepository) {
         this.lessonRepository = lessonRepository;
         this.courseRepository = courseRepository;
         this.lessonMapper = lessonMapper;
+        this.userRepository = userRepository;
     }
 
     public List<LessonDTO> getAllLessons() {
@@ -38,26 +48,35 @@ public class LessonService {
         return lessonMapper.toDTO(lesson);
     }
 
-    public LessonDTO createLesson(LessonRequestDTO lessonDTO) {
-        courseRepository.findById(lessonDTO.course())
+    public LessonDTO createLesson(Long courseId, LessonRequestDTO lessonDTO) throws BadRequestException {
+        String teacherEmail = SecurityUtils.getAuthenticatedUserEmail();
+        userRepository.findUserByEmail(teacherEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found! :("));
+        Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found for lesson creation."));
-        Lesson lesson = lessonMapper.requestDTOtoEntity(lessonDTO);
-        Lesson savedLesson = lessonRepository.save(lesson);
-        return lessonMapper.toDTO(savedLesson);
+        OwnershipVerifier.courseOwnershipVerifier(teacherEmail, course);
+        Lesson lesson = new Lesson();
+        lesson.setTitle(lessonDTO.title());
+        lesson.setDescription(lessonDTO.description());
+        lesson.setUrlVideo(lessonDTO.urlVideo());
+        lesson.setCourse(course);
+        lessonRepository.save(lesson);
+        return lessonMapper.toDTO(lesson);
     }
 
-    public LessonDTO updateLesson(LessonDTO lessonDTO, Long id) {
+    @Transactional
+    public LessonDTO updateLesson(Long id, LessonDTO lessonDTO) throws BadRequestException {
+        String teacherEmail = SecurityUtils.getAuthenticatedUserEmail();
+        userRepository.findUserByEmail(teacherEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found! :("));
         Lesson lessonToBeUpdated = lessonRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Lesson with ID " + id + " not found."));
 
-        Course course = courseRepository.findById(lessonDTO.course().id())
-                .orElseThrow(() -> new ResourceNotFoundException("Course not found for lesson update."));
+        OwnershipVerifier.courseOwnershipVerifier(teacherEmail, lessonToBeUpdated.getCourse());
 
         lessonToBeUpdated.setTitle(lessonDTO.title());
         lessonToBeUpdated.setDescription(lessonDTO.description());
         lessonToBeUpdated.setUrlVideo(lessonDTO.urlVideo());
-        lessonToBeUpdated.setCourse(course);
-
         Lesson updatedLesson = lessonRepository.save(lessonToBeUpdated);
         return lessonMapper.toDTO(updatedLesson);
     }
