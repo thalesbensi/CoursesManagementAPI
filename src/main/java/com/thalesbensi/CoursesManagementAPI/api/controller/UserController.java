@@ -1,10 +1,7 @@
 package com.thalesbensi.CoursesManagementAPI.api.controller;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.request.UserRequestDTO;
 import com.thalesbensi.CoursesManagementAPI.api.dto.response.UserMinResponseDTO;
-import com.thalesbensi.CoursesManagementAPI.api.dto.response.UserResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.services.UserService;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
