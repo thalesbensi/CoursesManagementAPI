@@ -10,9 +10,12 @@ import com.thalesbensi.CoursesManagementAPI.domain.entity.Enrollment;
 import com.thalesbensi.CoursesManagementAPI.domain.repositories.CourseRepository;
 import com.thalesbensi.CoursesManagementAPI.domain.repositories.EnrollmentRepository;
 import com.thalesbensi.CoursesManagementAPI.domain.repositories.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EnrollmentService {
@@ -41,29 +44,18 @@ public class EnrollmentService {
         return enrollmentMapper.toResponseDTO(enrollment);
     }
 
-    public EnrollmentResponseDTO createEnrollment(EnrollmentRequestDTO dto) {
-        User student = userRepository.findById(dto.studentId())
-                .orElseThrow(() -> new ResourceNotFoundException("User with ID " + dto.studentId() + " not found"));
-        Course course = courseRepository.findById(dto.courseId())
-                .orElseThrow(() -> new ResourceNotFoundException("Course with ID " + dto.courseId() + " not found"));
+    public EnrollmentResponseDTO createEnrollment(Long courseId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User student = userRepository.findUserByEmail(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course with ID " + courseId + " not found"));
         Enrollment enrollment = new Enrollment();
         enrollment.setStudent(student);
         enrollment.setCourse(course);
         Enrollment saved = enrollmentRepository.save(enrollment);
         return enrollmentMapper.toResponseDTO(saved);
-    }
-
-    public EnrollmentResponseDTO updateEnrollment(Long id, EnrollmentRequestDTO dto) {
-        Enrollment existing = enrollmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Enrollment with ID:" + id + " not found :("));
-        User student = userRepository.findById(dto.studentId())
-                .orElseThrow(() -> new RuntimeException("User with ID " + dto.studentId() + " not found"));
-        Course course = courseRepository.findById(dto.courseId())
-                .orElseThrow(() -> new RuntimeException("Course with ID " + dto.courseId() + " not found"));
-        existing.setStudent(student);
-        existing.setCourse(course);
-        Enrollment updated = enrollmentRepository.save(existing);
-        return enrollmentMapper.toResponseDTO(updated);
     }
 
     public void deleteEnrollment(Long id) {

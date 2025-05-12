@@ -23,7 +23,7 @@ public class EnrollmentController {
 
     @GetMapping()
     public ResponseEntity<List<EnrollmentResponseDTO>> getAllEnrollments() {
-        return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.getAllEnrollments());
+                             return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.getAllEnrollments());
     }
 
     @GetMapping("/{id}")
@@ -31,15 +31,10 @@ public class EnrollmentController {
         return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.getEnrollmentById(id));
     }
 
-    @PostMapping()
-    public ResponseEntity<EnrollmentResponseDTO> createEnrollment(@RequestBody EnrollmentRequestDTO enrollmentDTO) {
-        EnrollmentResponseDTO createdEnrollment = enrollmentService.createEnrollment(enrollmentDTO);
+    @PostMapping("/{courseId}")
+    public ResponseEntity<EnrollmentResponseDTO> createEnrollment(@PathVariable Long courseId) {
+        EnrollmentResponseDTO createdEnrollment = enrollmentService.createEnrollment(courseId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdEnrollment);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<EnrollmentResponseDTO> updateEnrollment(@PathVariable Long id, @RequestBody EnrollmentRequestDTO enrollmentDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.updateEnrollment(id, enrollmentDTO));
     }
 
     @DeleteMapping("/{id}")
