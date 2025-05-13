@@ -1,4 +1,4 @@
 package com.thalesbensi.CoursesManagementAPI.api.dto.response;
 
-public record EnrollmentResponseDTO(Long id, UserResponseDTO student, CourseResponseDTO course) {
+public record EnrollmentResponseDTO(Long id, UserMinResponseDTO student, CourseResponseDTO course) {
 }
