@@ -12,10 +12,6 @@ import com.thalesbensi.CoursesManagementAPI.domain.repositories.LessonRepository
 import com.thalesbensi.CoursesManagementAPI.infrastructure.utils.OwnershipVerifier;
 import com.thalesbensi.CoursesManagementAPI.infrastructure.utils.SecurityUtils;
 import jakarta.transaction.Transactional;
-import org.apache.catalina.security.SecurityUtil;
-import org.apache.coyote.BadRequestException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,30 +41,38 @@ public class LessonService {
     public LessonDTO getLessonById(Long id) {
         Lesson lesson = lessonRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Lesson with ID " + id + " not found."));
+
         return lessonMapper.toDTO(lesson);
     }
 
-    public LessonDTO createLesson(Long courseId, LessonRequestDTO lessonDTO) throws BadRequestException {
+    public LessonDTO createLesson(Long courseId, LessonRequestDTO lessonDTO){
         String teacherEmail = SecurityUtils.getAuthenticatedUserEmail();
+
         userRepository.findUserByEmail(teacherEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found! :("));
+
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found for lesson creation."));
+
         OwnershipVerifier.courseOwnershipVerifier(teacherEmail, course);
+
         Lesson lesson = new Lesson();
         lesson.setTitle(lessonDTO.title());
         lesson.setDescription(lessonDTO.description());
         lesson.setUrlVideo(lessonDTO.urlVideo());
         lesson.setCourse(course);
+
         lessonRepository.save(lesson);
         return lessonMapper.toDTO(lesson);
     }
 
     @Transactional
-    public LessonDTO updateLesson(Long id, LessonDTO lessonDTO) throws BadRequestException {
+    public LessonDTO updateLesson(Long id, LessonDTO lessonDTO){
         String teacherEmail = SecurityUtils.getAuthenticatedUserEmail();
+
         userRepository.findUserByEmail(teacherEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found! :("));
+
         Lesson lessonToBeUpdated = lessonRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Lesson with ID " + id + " not found."));
 
@@ -77,6 +81,7 @@ public class LessonService {
         lessonToBeUpdated.setTitle(lessonDTO.title());
         lessonToBeUpdated.setDescription(lessonDTO.description());
         lessonToBeUpdated.setUrlVideo(lessonDTO.urlVideo());
+
         Lesson updatedLesson = lessonRepository.save(lessonToBeUpdated);
         return lessonMapper.toDTO(updatedLesson);
     }

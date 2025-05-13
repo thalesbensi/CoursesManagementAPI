@@ -1,6 +1,5 @@
 package com.thalesbensi.CoursesManagementAPI.api.controller;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.request.EnrollmentRequestDTO;
 import com.thalesbensi.CoursesManagementAPI.api.dto.response.EnrollmentResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.services.CourseService;
 import com.thalesbensi.CoursesManagementAPI.domain.services.EnrollmentService;

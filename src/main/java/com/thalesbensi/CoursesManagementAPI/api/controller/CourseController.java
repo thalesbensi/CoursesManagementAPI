@@ -1,6 +1,5 @@
 package com.thalesbensi.CoursesManagementAPI.api.controller;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.LessonDTO;
 import com.thalesbensi.CoursesManagementAPI.api.dto.request.CourseRequestDTO;
 import com.thalesbensi.CoursesManagementAPI.api.dto.response.CourseResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.api.dto.response.LessonListItemResponseDTO;

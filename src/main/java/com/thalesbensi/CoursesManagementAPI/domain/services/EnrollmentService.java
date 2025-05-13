@@ -1,6 +1,5 @@
 package com.thalesbensi.CoursesManagementAPI.domain.services;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.request.EnrollmentRequestDTO;
 import com.thalesbensi.CoursesManagementAPI.api.dto.response.EnrollmentResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.Course;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.User;
@@ -15,7 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EnrollmentService {
@@ -41,19 +39,25 @@ public class EnrollmentService {
     public EnrollmentResponseDTO getEnrollmentById(Long id) {
         Enrollment enrollment = enrollmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Enrollment with ID:" + id + " not found :("));
+
         return enrollmentMapper.toResponseDTO(enrollment);
     }
 
     public EnrollmentResponseDTO createEnrollment(Long courseId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         String username = authentication.getName();
+
         User student = userRepository.findUserByEmail(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Course with ID " + courseId + " not found"));
+
         Enrollment enrollment = new Enrollment();
         enrollment.setStudent(student);
         enrollment.setCourse(course);
+
         Enrollment saved = enrollmentRepository.save(enrollment);
         return enrollmentMapper.toResponseDTO(saved);
     }

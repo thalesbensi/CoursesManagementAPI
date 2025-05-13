@@ -1,6 +1,5 @@
 package com.thalesbensi.CoursesManagementAPI.api.controller;
 
-
 import com.thalesbensi.CoursesManagementAPI.api.dto.authentication.AuthenticationDTO;
 import com.thalesbensi.CoursesManagementAPI.api.dto.authentication.RegisterDTO;
 import com.thalesbensi.CoursesManagementAPI.api.dto.authentication.response.LoginResponseDTO;
