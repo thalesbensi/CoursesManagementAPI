@@ -142,6 +142,8 @@ Inclua o token JWT no cabeçalho das requisições autenticadas, no seguinte for
 
 Authorization: Bearer {seu_token_jwt}
 
+---
+
 ## 📦 Docker
 
 A aplicação está pronta para ser executada com Docker utilizando **Docker Compose**, facilitando a configuração do ambiente completo com API e banco de dados PostgreSQL.
