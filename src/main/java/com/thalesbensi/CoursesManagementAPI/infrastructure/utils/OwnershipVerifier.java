@@ -14,7 +14,7 @@ public class OwnershipVerifier {
 
     public static void commentOwnershipVerifier(Comment comment, String userEmail) {
         if (!comment.getStudent().getEmail().equals(userEmail)) {
-            throw new UnauthorizedException("You are not allowed to edit this comment.");
+            throw new UnauthorizedException("You are not allowed to edit or delete this comment.");
         }
     }
 
