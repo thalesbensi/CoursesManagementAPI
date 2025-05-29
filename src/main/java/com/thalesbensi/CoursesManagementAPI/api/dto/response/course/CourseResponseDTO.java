@@ -1,4 +1,4 @@
-package com.thalesbensi.CoursesManagementAPI.api.dto.response;
+package com.thalesbensi.CoursesManagementAPI.api.dto.response.course;
 
 import java.util.Date;
 

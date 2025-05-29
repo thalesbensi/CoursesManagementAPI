@@ -1,6 +1,6 @@
 package com.thalesbensi.CoursesManagementAPI.infrastructure.mapper;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.response.CommentResponseDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.comment.CommentResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.Comment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

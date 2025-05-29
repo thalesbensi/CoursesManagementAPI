@@ -1,4 +1,4 @@
-package com.thalesbensi.CoursesManagementAPI.api.dto.request;
+package com.thalesbensi.CoursesManagementAPI.api.dto.request.user;
 
 import com.thalesbensi.CoursesManagementAPI.domain.enums.UserRole;
 

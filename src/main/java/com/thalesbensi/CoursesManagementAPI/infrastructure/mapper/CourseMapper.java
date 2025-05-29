@@ -1,7 +1,7 @@
 package com.thalesbensi.CoursesManagementAPI.infrastructure.mapper;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.request.CourseRequestDTO;
-import com.thalesbensi.CoursesManagementAPI.api.dto.response.CourseResponseDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.request.course.CourseRequestDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.course.CourseResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.Course;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.User;
 import org.mapstruct.Mapper;
