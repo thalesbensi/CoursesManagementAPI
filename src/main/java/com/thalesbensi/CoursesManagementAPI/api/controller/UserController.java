@@ -1,6 +1,6 @@
 package com.thalesbensi.CoursesManagementAPI.api.controller;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.response.UserMinResponseDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.user.UserMinResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

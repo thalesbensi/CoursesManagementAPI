@@ -1,6 +1,6 @@
 package com.thalesbensi.CoursesManagementAPI.api.controller;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.response.EnrollmentResponseDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.enrollment.EnrollmentResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.services.CourseService;
 import com.thalesbensi.CoursesManagementAPI.domain.services.EnrollmentService;
 import org.springframework.http.HttpStatus;
@@ -14,10 +14,9 @@ import java.util.List;
 public class EnrollmentController {
 
     private final EnrollmentService enrollmentService;
-    private final CourseService courseService;
 
-    public EnrollmentController(EnrollmentService enrollmentService, CourseService courseService) {this.enrollmentService = enrollmentService;
-        this.courseService = courseService;
+    public EnrollmentController(EnrollmentService enrollmentService, CourseService courseService) {
+        this.enrollmentService = enrollmentService;
     }
 
     @GetMapping()
