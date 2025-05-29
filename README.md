@@ -141,3 +141,56 @@ A API utiliza autenticação via **JWT (JSON Web Token)** para proteger rotas.
 Inclua o token JWT no cabeçalho das requisições autenticadas, no seguinte formato:
 
 Authorization: Bearer {seu_token_jwt}
+
+---
+
+## 📦 Docker
+
+A aplicação está pronta para ser executada com Docker utilizando **Docker Compose**, facilitando a configuração do ambiente completo com API e banco de dados PostgreSQL.
+
+---
+
+### 1. Configurar Variáveis de Ambiente
+
+Crie um arquivo chamado `.env` na raiz do projeto com o seguinte conteúdo:
+
+```env\
+# Banco de Dados
+POSTGRES_DB=coursesdb
+POSTGRES_USER=seu_usuario
+POSTGRES_PASSWORD=sua_senha
+````
+- 🔐 Substitua `seu_usuario` e `sua_senha` pelos valores desejados.
+- O Docker Compose utilizará automaticamente essas variáveis ao subir os containers.
+
+### 2. Subir a Aplicação com Docker
+
+Com o .env configurado, execute:
+```bash
+docker-compose up --build
+```
+Isso irá:
+   - Subir um container PostgreSQL com os dados definidos
+
+   - Subir a API Spring Boot já conectada ao banco
+
+A aplicação estará disponível em:
+
+    API: http://localhost:8080
+    
+    Swagger UI: http://localhost:8080/swagger-ui.html
+
+
+### 3. Parar a Aplicação
+
+Para encerrar e remover os containers:
+```bash
+docker-compose down
+```
+
+### ✅ Benefícios
+
+    - Setup rápido e padronizado com .env + docker-compose
+
+    - Sem necessidade de instalar PostgreSQL localmente
+
