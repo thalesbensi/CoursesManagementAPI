@@ -1,8 +1,10 @@
 package com.thalesbensi.CoursesManagementAPI.api.controller;
 
 import com.thalesbensi.CoursesManagementAPI.api.dto.LessonDTO;
-import com.thalesbensi.CoursesManagementAPI.api.dto.request.LessonRequestDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.request.lesson.LessonRequestDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.request.lesson.LessonUpdateRequestDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.services.LessonService;
+import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +30,13 @@ public class LessonController {
     }
 
     @PostMapping("/{courseId}")
-    public ResponseEntity<LessonDTO> createLesson(@PathVariable Long courseId, @RequestBody LessonRequestDTO lesson) throws BadRequestException {
+    public ResponseEntity<LessonDTO> createLesson(@PathVariable Long courseId, @RequestBody @Valid LessonRequestDTO lesson) throws BadRequestException {
         return ResponseEntity.status(HttpStatus.CREATED).body(lessonService.createLesson(courseId, lesson));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LessonDTO> updateLesson(@PathVariable Long id, @RequestBody LessonDTO lesson) throws BadRequestException {
-        return ResponseEntity.status(HttpStatus.OK).body(lessonService.updateLesson(id, lesson));
+    public ResponseEntity<LessonDTO> updateLesson(@PathVariable Long id, @RequestBody @Valid LessonUpdateRequestDTO lessonDTO) throws BadRequestException {
+        return ResponseEntity.status(HttpStatus.OK).body(lessonService.updateLesson(id, lessonDTO));
     }
 
     @DeleteMapping("/{id}")
