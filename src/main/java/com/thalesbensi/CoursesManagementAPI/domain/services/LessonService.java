@@ -1,7 +1,8 @@
 package com.thalesbensi.CoursesManagementAPI.domain.services;
 
 import com.thalesbensi.CoursesManagementAPI.api.dto.LessonDTO;
-import com.thalesbensi.CoursesManagementAPI.api.dto.request.LessonRequestDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.request.lesson.LessonRequestDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.request.lesson.LessonUpdateRequestDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.repositories.UserRepository;
 import com.thalesbensi.CoursesManagementAPI.infrastructure.exceptions.ResourceNotFoundException;
 import com.thalesbensi.CoursesManagementAPI.infrastructure.mapper.LessonMapper;
@@ -67,14 +68,14 @@ public class LessonService {
     }
 
     @Transactional
-    public LessonDTO updateLesson(Long id, LessonDTO lessonDTO){
+    public LessonDTO updateLesson(Long lessonId, LessonUpdateRequestDTO lessonDTO){
         String teacherEmail = SecurityUtils.getAuthenticatedUserEmail();
 
         userRepository.findUserByEmail(teacherEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found! :("));
 
-        Lesson lessonToBeUpdated = lessonRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Lesson with ID " + id + " not found."));
+        Lesson lessonToBeUpdated = lessonRepository.findById(lessonId)
+                .orElseThrow(() -> new ResourceNotFoundException("Lesson with ID " + lessonId + " not found."));
 
         OwnershipVerifier.courseOwnershipVerifier(teacherEmail, lessonToBeUpdated.getCourse());
 

@@ -1,7 +1,7 @@
 package com.thalesbensi.CoursesManagementAPI.domain.services;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.request.CommentRequestDTO;
-import com.thalesbensi.CoursesManagementAPI.api.dto.response.CommentResponseDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.request.comment.CommentRequestDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.comment.CommentResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.Comment;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.Lesson;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.User;

@@ -1,8 +1,8 @@
 package com.thalesbensi.CoursesManagementAPI.domain.services;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.request.CourseRequestDTO;
-import com.thalesbensi.CoursesManagementAPI.api.dto.response.CourseResponseDTO;
-import com.thalesbensi.CoursesManagementAPI.api.dto.response.LessonListItemResponseDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.request.course.CourseRequestDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.course.CourseResponseDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.lesson.LessonListItemResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.Lesson;
 import com.thalesbensi.CoursesManagementAPI.domain.repositories.LessonRepository;
 import com.thalesbensi.CoursesManagementAPI.infrastructure.exceptions.ResourceNotFoundException;

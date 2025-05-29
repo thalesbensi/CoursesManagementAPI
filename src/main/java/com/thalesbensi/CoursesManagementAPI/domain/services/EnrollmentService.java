@@ -1,6 +1,6 @@
 package com.thalesbensi.CoursesManagementAPI.domain.services;
 
-import com.thalesbensi.CoursesManagementAPI.api.dto.response.EnrollmentResponseDTO;
+import com.thalesbensi.CoursesManagementAPI.api.dto.response.enrollment.EnrollmentResponseDTO;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.Course;
 import com.thalesbensi.CoursesManagementAPI.domain.entity.User;
 import com.thalesbensi.CoursesManagementAPI.infrastructure.exceptions.ResourceNotFoundException;
