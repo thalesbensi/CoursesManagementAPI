@@ -3,6 +3,7 @@ package com.thalesbensi.CoursesManagementAPI.domain.entity;
 import com.thalesbensi.CoursesManagementAPI.domain.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +17,7 @@ import java.util.List;
 @Table(name = "user_tb")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
 
     @Id
