@@ -1,7 +1,8 @@
 # 🎓 Sistema de Gerenciamento de Cursos Online (EAD)
 
-Uma API RESTful para gerenciar uma plataforma de ensino a distância.  
-Professores podem criar cursos e adicionar aulas. Alunos podem se cadastrar, se inscrever em cursos, assistir aulas e deixar comentários.
+Uma API RESTful robusta desenvolvida com Java e Spring Boot para gerenciar uma plataforma de Ensino a Distância (EAD). 
+Permite que professores publiquem cursos e aulas, enquanto alunos podem se inscrever, assistir conteúdos e interagir com comentários.
+
 
 Este projeto foi criado para consolidar conhecimentos em desenvolvimento Back-end com **Java** e **Spring Boot**, aplicando boas práticas e arquitetura em camadas.
 
