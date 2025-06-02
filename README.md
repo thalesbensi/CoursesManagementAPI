@@ -188,7 +188,7 @@ Para encerrar e remover os containers:
 docker-compose down
 ```
 
-### ✅ Benefícios
+#### ✅ Benefícios
 
     - Setup rápido e padronizado com .env + docker-compose
 
