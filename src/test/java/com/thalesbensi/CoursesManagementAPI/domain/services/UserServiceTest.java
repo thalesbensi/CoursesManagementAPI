@@ -75,7 +75,7 @@ class UserServiceTest {
 
 
     @Test
-    @DisplayName("Should throw Exception when getUserById method is called with a invalid or inexistent ID")
+    @DisplayName("Should throw an Exception when getUserById method is called with a invalid or inexistent ID")
     void getUserByIdFailure() {
         when(userRepository.findById(ID)).thenReturn(Optional.empty());
 
@@ -88,7 +88,6 @@ class UserServiceTest {
     @Test
     @DisplayName("Should delete a User when deleteUserById method is called ")
     void deleteUserByIdSuccess() {
-
         when(userRepository.existsById(ID)).thenReturn(true);
 
         userService.deleteUserById(ID);
@@ -99,7 +98,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Should throw Exception when deleteUserById method is called with a invalid or inexistent ID")
+    @DisplayName("Should throw an Exception when deleteUserById method is called with a invalid or inexistent ID")
     void deleteUserByIdFailure() {
         when(userRepository.existsById(ID)).thenReturn(false);
 
